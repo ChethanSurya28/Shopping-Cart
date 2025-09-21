@@ -15,6 +15,9 @@
 
     /* Navbar */
     nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       background: #222;
       color: white;
       display: flex;
@@ -39,6 +42,7 @@
       color: white;
       text-decoration: none;
       font-size: 16px;
+      cursor: pointer;
     }
     nav ul li a:hover {
       color: #ffd700;
@@ -84,11 +88,11 @@
 
     /* Cart section */
     .cart {
+      display: none; /* hidden by default */
       flex: 1;
       border-left: 2px solid #ccc;
       padding: 20px;
       background: #f5f5f5;
-      display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
@@ -155,6 +159,29 @@
       text-transform: uppercase;
       margin-top: 10px;
     }
+
+    /* Floating WhatsApp button */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .whatsapp-float img {
+      width: 100%;
+      height: 100%;
+    }
+    .whatsapp-float:hover {
+      transform: scale(1.2);
+    }
+
   </style>
 </head>
 <body>
@@ -165,8 +192,8 @@
   <div class="logo">Shop</div>
   <ul>
     <li><a href="#home">Home</a></li>
-    <li><a href="#cart">Cart</a></li>
     <li><a href="#contact">Contact Us</a></li>
+    <li><a href="#cart" onclick="toggleCart(event)">Cart (<span id="cart-count">0</span>)</a></li>
   </ul>
 </nav>
 
@@ -176,39 +203,55 @@
   <div class="products">
     <div class="product">
       <img src="https://i.postimg.cc/LXK6q9WM/Co-QEnergizer-1.jpg" 
-      onmouseover="this.src='https://i.postimg.cc/3wDxJ4nB/Co-QEnergizer-2.jpg'" alt="Product 1">
+      onmouseover="this.src='https://i.postimg.cc/3wDxJ4nB/Co-QEnergizer-2.jpg'" 
+      onmouseout="this.src='https://i.postimg.cc/LXK6q9WM/Co-QEnergizer-1.jpg'" 
+      alt="Product 1">
       <div class="productcat">GENERAL WELLNESS, NUTRITIONAL</div>
       <h3>CoQ Energizer®</h3>
       <p>₹1,350.00</p>
-      <button onclick="addToCart('Product 1', 1350.00)">Add to Cart</button>
+      <button onclick="addToCart('CoQ Energizer®', 1350.00)">Add to Cart</button>
     </div>
     <div class="product">
       <img src="https://i.postimg.cc/4yVRQgHR/Curcumin-C3-Power-01.jpg" alt="Product 2">
        <div class="productcat">GENERAL WELLNESS, NUTRITIONAL</div>
       <h3>Curcumin C3 Power™ Tablets 60s 525mg</h3>
       <p>₹1,849.00</p>
-      <button onclick="addToCart('Product 2', 1849.00)">Add to Cart</button>
+      <button onclick="addToCart('Curcumin C3 Power™', 1849.00)">Add to Cart</button>
     </div>
     <div class="product">
       <img src="https://i.postimg.cc/c4GS4rPx/Omega-Bio-Plus-01.jpg" alt="Product 3">
       <div class="productcat">GENERAL WELLNESS, NUTRITIONAL</div>
       <h3>Omega BioPlus™</h3>
       <p>₹899.00</p>
-      <button onclick="addToCart('Product 3', 899.00)">Add to Cart</button>
+      <button onclick="addToCart('Omega BioPlus™', 899.00)">Add to Cart</button>
     </div>
     <div class="product">
       <img src="https://i.postimg.cc/fW9sNx2q/Spirulina-Bottle-Mockup-1.jpg" alt="Product 4">
       <div class="productcat">GENERAL WELLNESS, NUTRITIONAL</div>
       <h3>Organic Spirulina</h3>
       <p>₹900.00</p>
-      <button onclick="addToCart('Product 4', 900.00)">Add to Cart</button>
+      <button onclick="addToCart('Organic Spirulina', 900.00)">Add to Cart</button>
     </div>
     <div class="product">
       <img src="https://i.postimg.cc/QMV7xXyb/Glyca-Care-01.jpg" alt="Product 5">
       <div class="productcat">GENERAL WELLNESS, NUTRITIONAL</div>
       <h3>Glycacare®</h3>
       <p>₹1,300.00</p>
-      <button onclick="addToCart('Product 5', 1300.00)">Add to Cart</button>
+      <button onclick="addToCart('Glycacare®', 1300.00)">Add to Cart</button>
+    </div>
+     <div class="product">
+      <img src="https://i.postimg.cc/BZKwC47z/Bioprotectent-1.jpg" alt="Product 6">
+      <div class="productcat">GENERAL WELLNESS, NUTRITIONAL</div>
+      <h3>Bioprotectant™</h3>
+      <p>₹1,250.00</p>
+      <button onclick="addToCart('Glycacare®', 1250.00)">Add to Cart</button>
+    </div>
+     <div class="product">
+      <img src="https://i.postimg.cc/pXQt9PtD/Osteostrong-1.jpg" alt="Product 7">
+      <div class="productcat">Bone & Joint Health, Nutritional, Women Health</div>
+      <h3>Osteostrong®</h3>
+      <p>₹1,200.00</p>
+      <button onclick="addToCart('Osteostrong®', 1200.00)">Add to Cart</button>
     </div>
   </div>
 
@@ -221,10 +264,16 @@
   </div>
 </div>
 
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/919353945553" target="_blank" class="whatsapp-float">
+    <img src="https://i.postimg.cc/W3c8CF5K/md-5b321c98efaa6.jpg" alt="WhatsApp">
+</a>
+
 <!-- Contact Us -->
 <div class="contact" id="contact">
   <h2>Contact Us</h2>
-  <p>📞 Phone: +91 9740159865</p>
+  <p>📞 Phone: +91 9740159865   +91 9353945553</p>
   <p>✉ Email: chethuyashu01@gmail.com</p>
   <p>🏢 Stock Point: HARSHITHA WELLNESS CENTER</p>
   <p>💳 UPI: 9740159865@ybl</p>
@@ -265,7 +314,8 @@
       `;
     });
 
-    document.getElementById("total").innerText = total;
+    document.getElementById("total").innerText = total.toLocaleString("en-IN");
+    document.getElementById("cart-count").innerText = count; // update count in navbar
   }
 
   function removeItem(index) {
@@ -274,7 +324,17 @@
   }
 
   function checkout() {
-    alert("Proceeding to payment... (UPI: flexshop@upi)");
+    alert("Proceeding to payment... (UPI: 9740159865@ybl)");
+  }
+
+  function toggleCart(event) {
+    event.preventDefault();
+    let cartBox = document.getElementById("cart");
+    if (cartBox.style.display === "none" || cartBox.style.display === "") {
+      cartBox.style.display = "flex";
+    } else {
+      cartBox.style.display = "none";
+    }
   }
 </script>
 
